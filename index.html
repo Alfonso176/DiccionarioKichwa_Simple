@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Traductor Kichwa-Español</title>
+</head>
+<body>
+  <h2>Traductor Kichwa → Español</h2>
+  
+  <input type="text" id="palabraKichwa" placeholder="Escribe una palabra en Kichwa">
+  <button onclick="traducir()">Traducir</button>
+  
+  <p id="resultado"></p>
+
+  <script>
+    function traducir() {
+      const palabra = document.getElementById('palabraKichwa').value;
+
+      fetch(`http://localhost:8080/api/traducir?palabra=${encodeURIComponent(palabra)}`)
+        .then(response => {
+          if (!response.ok) throw new Error("Error al consultar la API");
+          return response.json();
+        })
+        .then(data => {
+          document.getElementById('resultado').textContent = "Traducción: " + data.traduccion;
+        })
+        .catch(error => {
+          document.getElementById('resultado').textContent = "No se encontró la palabra o hubo un error.";
+          console.error(error);
+        });
+    }
+  </script>
+</body>
+</html>
